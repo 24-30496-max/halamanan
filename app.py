@@ -14,8 +14,14 @@ from mysql.connector import Error
 from datetime import datetime
 
 app = Flask(__name__)
-# Use environment variable for secret key, with fallback for development
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-key-change-in-production")
+# Use environment variable for secret key
+secret_key = os.getenv("FLASK_SECRET_KEY")
+if not secret_key:
+    raise ValueError(
+        "FLASK_SECRET_KEY environment variable is not set. "
+        "Please set it in your .env file before running the application."
+    )
+app.secret_key = secret_key
 
 # Initialize Flask-Login
 login_manager = LoginManager()
@@ -1147,4 +1153,7 @@ def internal_error(error):
 # ============================================
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    # Get debug mode from environment variable, default to False for security
+    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() in ["true", "1", "yes"]
+    port = int(os.getenv("FLASK_PORT", "5000"))
+    app.run(debug=debug_mode, port=port)

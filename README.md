@@ -24,7 +24,7 @@ A Flask-based web application that connects farmers to share and exchange resour
 
 3. **Install dependencies:**
    ```bash
-   pip install flask flask-login werkzeug mysql-connector-python python-dotenv
+   pip install -r requirements.txt
    ```
 
 4. **Set up environment variables:**
@@ -32,15 +32,21 @@ A Flask-based web application that connects farmers to share and exchange resour
      ```bash
      cp .env.example .env
      ```
-   - Edit `.env` with your database credentials:
+   - Edit `.env` with your database credentials and settings:
      ```
-     FLASK_SECRET_KEY=your_secret_key_here
+     # Required
+     FLASK_SECRET_KEY=your_secret_key_here_change_in_production
      DB_HOST=localhost
      DB_PORT=3306
      DB_USER=your_db_user
      DB_PASSWORD=your_db_password
      DB_NAME=halamanan07
+     
+     # Optional (defaults shown)
+     FLASK_DEBUG=False
+     FLASK_PORT=5000
      ```
+   - **Important**: The `FLASK_SECRET_KEY` is required and must be a strong, random string in production.
 
 5. **Create the database:**
    - Connect to MySQL and run the schema:
