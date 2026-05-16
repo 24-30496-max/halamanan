@@ -124,18 +124,18 @@
 <div id="rejectModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeRejectModal()">&times;</span>
-        
+
         <h2>❌ Reject Payment</h2>
         <p>Are you sure you want to reject this payment?</p>
 
         <form id="rejectForm" method="POST">
             <div class="form-group">
                 <label for="rejection_reason">Reason for Rejection (Required) *</label>
-                <textarea 
-                    id="rejection_reason" 
-                    name="rejection_reason" 
+                <textarea
+                    id="rejection_reason"
+                    name="rejection_reason"
                     placeholder="e.g., Item not available anymore, Wrong amount received..."
-                    required 
+                    required
                     class="form-input textarea-input"
                     rows="4"
                 ></textarea>
