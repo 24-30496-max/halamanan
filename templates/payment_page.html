@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Payment - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="payment-container">
+    <div class="payment-card">
+        <h1>💳 Payment for {{ resource.name }}</h1>
+        <p class="payment-subtitle">Complete your transaction</p>
+
+        <!-- Resource Summary -->
+        <div class="payment-summary">
+            <h3>📦 Resource Details</h3>
+            <div class="summary-item">
+                <span class="summary-label">Resource:</span>
+                <span class="summary-value">{{ resource.name }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Category:</span>
+                <span class="summary-value">{{ resource.category }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Seller:</span>
+                <span class="summary-value">{{ resource.farmer_name }}</span>
+            </div>
+        </div>
+
+        <!-- Seller Information -->
+        <div class="seller-info">
+            <h3>👤 Seller Contact</h3>
+            <p><strong>Name:</strong> {{ resource.farmer_name }}</p>
+            <p><strong>Phone:</strong> 📞 {{ resource.phone }}</p>
+            <p><strong>Location:</strong> 📍 {{ resource.city }}, {{ resource.province }}</p>
+        </div>
+
+        <!-- Payment Form -->
+        <form method="POST" class="payment-form">
+            <!-- Amount -->
+            <div class="form-group">
+                <label for="amount">Payment Amount (₱) *</label>
+                <input 
+                    type="number" 
+                    id="amount" 
+                    name="amount" 
+                    placeholder="Enter amount"
+                    step="0.01"
+                    min="0"
+                    required 
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Payment Method -->
+            <div class="form-group">
+                <label for="payment_method">Payment Method *</label>
+                <select id="payment_method" name="payment_method" required class="form-input">
+                    <option value="">-- Select Method --</option>
+                    <option value="Cash">💵 Cash (Pay in Person)</option>
+                    <option value="Bank Transfer">🏦 Bank Transfer</option>
+                    <option value="Online Payment">📱 Online Payment (GCash, PayMaya, etc.)</option>
+                </select>
+            </div>
+
+            <!-- Transaction Reference Number -->
+            <div class="form-group">
+                <label for="transaction_ref">Transaction Reference Number (Optional)</label>
+                <input 
+                    type="text" 
+                    id="transaction_ref" 
+                    name="transaction_ref" 
+                    placeholder="e.g., GCash: 1234567890, Bank Ref: BR-2026-05-16-001"
+                    class="form-input"
+                >
+                <small class="form-hint">
+                    📌 If paying online or via bank transfer, enter the reference/receipt number here so the seller can verify payment.
+                    <br>For GCash/PayMaya: Enter the transaction number from your receipt
+                    <br>For Bank Transfer: Enter the bank reference number
+                </small>
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group">
+                <label for="notes">Additional Notes (Optional)</label>
+                <textarea 
+                    id="notes" 
+                    name="notes" 
+                    placeholder="e.g., Payment terms, special instructions..."
+                    class="form-input textarea-input"
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p>💡 <strong>Note:</strong> This payment will be recorded in your transaction history. Contact the seller directly to arrange payment details and confirm receipt of payment before submitting.</p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-large">
+                ✅ Record Payment
+            </button>
+
+            <!-- Back Link -->
+            <p class="form-footer">
+                <a href="/resource/{{ resource.resource_id }}" class="link">← Cancel</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

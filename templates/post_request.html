@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Post a Request - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="post-container">
+    <div class="post-card">
+        <h1>Post a Request</h1>
+        <p class="post-subtitle">Tell farmers what you're looking for!</p>
+
+        <form method="POST" class="post-form">
+            <!-- Category Selection -->
+            <div class="form-group">
+                <label for="category">What are you looking for? *</label>
+                <select id="category" name="category" required class="form-input">
+                    <option value="">-- Select Category --</option>
+                    <option value="Seeds">Seeds</option>
+                    <option value="Fertilizer">Fertilizer</option>
+                    <option value="Equipment">Equipment</option>
+                    <option value="Tools">Tools</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <!-- Item Name -->
+            <div class="form-group">
+                <label for="needed_item">What specific item do you need? *</label>
+                <input 
+                    type="text" 
+                    id="needed_item" 
+                    name="needed_item" 
+                    placeholder="e.g., Corn Seeds, NPK Fertilizer, Tractor"
+                    required 
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Describe what you need *</label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    placeholder="Provide details about quantity, quality, specifications, etc."
+                    required 
+                    class="form-input textarea-input"
+                    rows="5"
+                ></textarea>
+            </div>
+
+            <!-- When do you need it? -->
+            <div class="form-group">
+                <label for="needed_date">When do you need it? *</label>
+                <input 
+                    type="date" 
+                    id="needed_date" 
+                    name="needed_date" 
+                    required 
+                    class="form-input date-input"
+                >
+            </div>
+
+            <!-- Urgency Level -->
+            <div class="form-group">
+                <label for="urgency">How urgent is this? *</label>
+                <select id="urgency" name="urgency" required class="form-input">
+                    <option value="">-- Select Urgency --</option>
+                    <option value="Not Urgent">Not Urgent</option>
+                    <option value="Somewhat Urgent">Somewhat Urgent</option>
+                    <option value="Very Urgent">Very Urgent</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+
+            <!-- Budget/Preferred Arrangement -->
+            <div class="form-group">
+                <label for="arrangement">How do you prefer to arrange? *</label>
+                <select id="arrangement" name="arrangement" required class="form-input">
+                    <option value="">-- Select Arrangement --</option>
+                    <option value="Free">Free (Looking for donation)</option>
+                    <option value="Barter">Barter (Exchange for something else)</option>
+                    <option value="Negotiable">Negotiable (Discuss price)</option>
+                </select>
+            </div>
+
+            <!-- Error Message -->
+            {% if error %}
+                <div class="alert alert-error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-large">
+                Post My Request
+            </button>
+
+            <!-- Back Link -->
+            <p class="form-footer">
+                <a href="/browse" class="link">← Back to Browse</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Info Box -->
+    <div class="info-box">
+        <h3Tips for Getting Help</h3>
+        <ul>
+            <li><strong>Be Specific:</strong> Clearly describe what you need and why</li>
+            <li><strong>Be Realistic:</strong> Set a reasonable date for when you need it</li>
+            <li><strong>Be Clear:</strong> Explain your arrangement preference</li>
+            <li><strong>Be Responsive:</strong> Check notifications when farmers respond</li>
+            <li><strong>Be Honest:</strong> Farmers appreciate honest communication</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

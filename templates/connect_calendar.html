@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Select Dates - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="calendar-container">
+    <div class="calendar-card">
+        <h1>📅 Select Borrowing Dates</h1>
+        <p class="calendar-subtitle">When do you want to borrow this resource?</p>
+
+        <form method="POST" class="calendar-form">
+            <!-- Start Date -->
+            <div class="form-group">
+                <label for="start_date">Start Date (When you need it) *</label>
+                <input 
+                    type="date" 
+                    id="start_date" 
+                    name="start_date" 
+                    required 
+                    class="form-input date-input"
+                >
+            </div>
+
+            <!-- End Date -->
+            <div class="form-group">
+                <label for="end_date">End Date (When you'll return it) *</label>
+                <input 
+                    type="date" 
+                    id="end_date" 
+                    name="end_date" 
+                    required 
+                    class="form-input date-input"
+                >
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p>💡 <strong>Note:</strong> After you submit, the farmer will receive a notification and can approve or reject your request.</p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-large">
+                ✅ Send Request
+            </button>
+
+            <!-- Back Link -->
+            <p class="form-footer">
+                <a href="/browse" class="link">← Cancel</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Resources - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="browse-container">
+    <!-- Sidebar Filter -->
+    <aside class="filter-sidebar">
+        <h3>Filter Resources</h3>
+        
+        <form method="GET" class="filter-form" id="filterForm">
+            <!-- Category Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Category:</label>
+                <div class="filter-options">
+                    <label class="checkbox-label">
+                        <input type="radio" name="category" value="" {% if not category %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        All Categories
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="category" value="Seeds" {% if category == 'Seeds' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Seeds
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="category" value="Fertilizer" {% if category == 'Fertilizer' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Fertilizer
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="category" value="Equipment" {% if category == 'Equipment' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Equipment
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="category" value="Tools" {% if category == 'Tools' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Tools
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="category" value="Others" {% if category == 'Others' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Others
+                    </label>
+                </div>
+            </div>
+            <!-- Status Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Status:</label>
+                <div class="filter-options">
+                    <label class="checkbox-label">
+                        <input type="radio" name="status" value="" {% if not status %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        All Status
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="status" value="Available" {% if status == 'Available' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Available
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="radio" name="status" value="Pending" {% if status == 'Pending' %}checked{% endif %} onchange="document.getElementById('filterForm').submit()">
+                        Pending
+                    </label>
+                </div>
+            </div>
+            <!-- Search Box -->
+            <div class="filter-group">
+                <label class="filter-label">Search:</label>
+                <input type="text" name="search" placeholder="Search resources..." class="search-input" value="{{ search_query | default('') }}">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Search</button>
+            </div>
+        </form>
+
+        <!-- Quick Action Button -->
+        <div class="filter-action">
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">
+                Want to post your own resource?
+            </p>
+            <a href="/post-offer" class="btn btn-secondary" style="width: 100%; display: block; text-align: center;">Post an Offer</a>
+        </div>
+    </aside>
+
+    <!-- Main Browse Area -->
+    <main class="browse-main">
+        <div class="browse-header">
+            <h2>Available Resources</h2>
+            <p class="browse-subtitle">
+                {% if resources | length > 0 %}
+                    Found {{ resources | length }} resource(s)
+                {% else %}
+                    No resources found. Try adjusting your filters!
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Resources Grid -->
+        {% if resources %}
+            <div class="resources-grid">
+                {% for resource in resources %}
+                    <div class="resource-card">
+                        <!-- Resource Header -->
+                        <div class="resource-header">
+                            <div class="resource-category">
+                                {% if resource.category == 'Seeds' %}
+                                    Seeds
+                                {% elif resource.category == 'Fertilizer' %}
+                                    Fertilizer
+                                {% elif resource.category == 'Equipment' %}
+                                    Equipment
+                                {% elif resource.category == 'Tools' %}
+                                    Tools
+                                {% else %}
+                                    Others
+                                {% endif %}
+                            </div>
+                            <div class="resource-status 
+                                {% if resource.status == 'Available' %}status-available
+                                {% elif resource.status == 'Pending' %}status-pending
+                                {% else %}status-completed
+                                {% endif %}">
+                                {{ resource.status }}
+                            </div>
+                        </div>
+
+                        <!-- Resource Content -->
+                        <h3 class="resource-name">{{ resource.name }}</h3>
+                        <p class="resource-description">{{ resource.description | truncate(100) }}</p>
+
+                        <!-- Resource Details -->
+                        <div class="resource-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Available From:</span>
+                                <span class="detail-value">{{ resource.start_available_date }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Until:</span>
+                                <span class="detail-value">{{ resource.end_available_date }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Farmer Info -->
+                        <div class="farmer-info">
+                            <div class="farmer-name">{{ resource.farmer_name }}</div>
+                            <div class="farmer-location">{{ resource.farmer_city }}, {{ resource.farmer_province }}</div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="resource-actions">
+                            <a href="/resource/{{ resource.resource_id }}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-results">
+                <div class="no-results-icon"></div>
+                <h3>No Resources Found</h3>
+                <p>Try adjusting your filters or search query.</p>
+                <p>Or post your own resource if you're looking to share!</p>
+                <a href="/post-offer" class="btn btn-primary">Post a Resource</a>
+            </div>
+        {% endif %}
+    </main>
+</div>
+
+<!-- Also Show Recent Requests Section -->
+<section class="recent-requests-section">
+    <h2>Recent Requests from Farmers</h2>
+    <p class="section-subtitle">Farmers looking for resources - Maybe you can help?</p>
+    
+    <div class="requests-grid">
+        {% if recent_requests %}
+            {% for req in recent_requests %}
+                <div class="request-card">
+                    <div class="request-category">
+                        {% if req.category == 'Seeds' %}
+                        {% elif req.category == 'Fertilizer' %}
+                        {% elif req.category == 'Equipment' %}
+                        {% elif req.category == 'Tools' %}
+                        {% else %}{% endif %}
+                        {{ req.category }}
+                    </div>
+                    <h4>{{ req.needed_item }}</h4>
+                    <p class="request-desc">{{ req.description | truncate(80) }}</p>
+                    <div class="request-farmer">Needed by: <strong>{{ req.farmer_name }}</strong></div>
+                    <a href="/offer-help/{{ req.request_id }}" class="btn btn-secondary" style="width: 100%; text-align: center;">I Have This</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: var(--text-light);">No recent requests at this time.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

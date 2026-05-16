@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Home - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<!-- Quick Stats Section -->
+<section class="stats-section">
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_farmers | default('0') }}</div>
+            <div class="stat-label">Active Farmers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_resources | default('0') }}</div>
+            <div class="stat-label">Resources Available</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_requests | default('0') }}</div>
+            <div class="stat-label">Active Requests</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_connections | default('0') }}</div>
+            <div class="stat-label">Successful Connections</div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <h2>How H.A.L.A.M.A.N.A.N Works</h2>
+    <p>
+        Helping Agriculture Link All Machinery And Nurture Agrarian Needs
+    </p>
+    
+    <div class="features-grid">
+        <!-- Feature 1: Post Request -->
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Post a Request</h3>
+            <p>
+                Need fertilizer, seeds, or equipment? Post your request and let other farmers know
+                what you're looking for.
+            </p>
+        </div>
+
+        <!-- Feature 2: Browse Resources -->
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Browse Resources</h3>
+            <p>
+                Filter by category and find resources available from farmers near you. 
+                Easy to navigate!
+            </p>
+        </div>
+
+        <!-- Feature 3: Connect -->
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>I Can Help</h3>
+            <p>
+                Found what you need? Click "I Can Help" to connect with the farmer. 
+                Exchange contact info and arrange pickup.
+            </p>
+        </div>
+
+        <!-- Feature 4: Schedule -->
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Schedule & Arrange</h3>
+            <p>
+                Use the calendar to pick dates for borrowing equipment or arranging pickup.
+                Simple and straightforward!
+            </p>
+        </div>
+
+        <!-- Feature 5: Approve/Reject -->
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Approve or Reject</h3>
+            <p>
+                Receive notifications when someone wants to help. Review and approve 
+                or reject requests in your dashboard.
+            </p>
+        </div>
+
+        <!-- Feature 6: Get Support -->
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Direct Contact</h3>
+            <p>
+                Connect directly with farmers via their phone number. Chat and arrange 
+                the details that work for you!
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section">
+    <h2>What Can You Find?</h2>
+    <div class="categories-grid">
+        <div class="category-box">
+            <div class="category-emoji"></div>
+            <h3>Seeds</h3>
+            <p>Find or share various seeds</p>
+        </div>
+        <div class="category-box">
+            <div class="category-emoji"></div>
+            <h3>Fertilizer</h3>
+            <p>Find or share fertilizers</p>
+        </div>
+        <div class="category-box">
+            <div class="category-emoji"></div>
+            <h3>Equipment</h3>
+            <p>Borrow or lend farm equipment</p>
+        </div>
+        <div class="category-box">
+            <div class="category-emoji"></div>
+            <h3>Tools</h3>
+            <p>Share farming tools</p>
+        </div>
+        <div class="category-box">
+            <div class="category-emoji"></div>
+            <h3>Others</h3>
+            <p>Find other agricultural items</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Farmers Resource Exchange{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="logo">
+                <h2>H.A.L.A.M.A.N.A.N</h2>
+            </div>
+
+            <!-- Navigation Menu -->
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/browse" class="nav-link">Browse Resources</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="/post-request" class="nav-link">Post Request</a></li>
+                    <li><a href="/post-offer" class="nav-link">Post Offer</a></li>
+                    <li><a href="/pending-payments" class="nav-link">Pending Approvals</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <li><a href="/logout" class="nav-link logout-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="/login" class="nav-link login-btn">Login</a></li>
+                    <li><a href="/register" class="nav-link register-btn">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>H.A.L.A.M.A.N.A.N - Connecting Farmers, Sharing Resources</p>
+        <p>Help farmers access resources easily 🌱</p>
+    </footer>
+
+</body>
+</html>

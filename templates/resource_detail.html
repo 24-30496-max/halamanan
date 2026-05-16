@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.name }} - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <div class="detail-card">
+        <!-- Resource Header -->
+        <div class="detail-header">
+            <div class="detail-category">
+                {% if resource.category == 'Seeds' %}
+                    🌱 Seeds
+                {% elif resource.category == 'Fertilizer' %}
+                    🧪 Fertilizer
+                {% elif resource.category == 'Equipment' %}
+                    🚜 Equipment
+                {% elif resource.category == 'Tools' %}
+                    🔧 Tools
+                {% else %}
+                    📦 Others
+                {% endif %}
+            </div>
+            <div class="detail-status {{ resource.status | lower }}">
+                {{ resource.status }}
+            </div>
+        </div>
+
+        <!-- Resource Name & Description -->
+        <h1>{{ resource.name }}</h1>
+        <p class="detail-description">{{ resource.description }}</p>
+
+        <!-- Resource Details -->
+        <div class="detail-info">
+            <h3>📋 Resource Information</h3>
+            <div class="info-row">
+                <span class="info-label">Category:</span>
+                <span class="info-value">{{ resource.category }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value">{{ resource.status }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Available From:</span>
+                <span class="info-value">{{ resource.start_available_date }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Until:</span>
+                <span class="info-value">{{ resource.end_available_date }}</span>
+            </div>
+        </div>
+
+        <!-- Farmer Information -->
+        <div class="detail-farmer">
+            <h3>👤 Seller Information</h3>
+            <div class="farmer-details">
+                <p><strong>Name:</strong> {{ resource.farmer_name }}</p>
+                <p><strong>Location:</strong> 📍 {{ resource.city }}, {{ resource.province }}</p>
+                <p><strong>Contact:</strong> 📞 {{ resource.phone }}</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="detail-actions">
+            {% if resource.user_id != current_user.id %}
+                <!-- INQUIRE BUTTON -->
+                <form method="POST" action="/inquire/{{ resource.resource_id }}" style="flex: 1;">
+                    {% if has_inquired %}
+                        <button type="button" class="btn btn-secondary btn-large" disabled>
+                            ✅ Inquiry Sent
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn btn-secondary btn-large">
+                            📩 Inquire
+                        </button>
+                    {% endif %}
+                </form>
+
+                <!-- PAYMENT BUTTON -->
+                <a href="/payment/{{ resource.resource_id }}" class="btn btn-primary btn-large" style="flex: 1; text-align: center;">
+                    💰 Pay Now
+                </a>
+            {% else %}
+                <p class="info-message">✅ This is your resource</p>
+            {% endif %}
+        </div>
+
+        <!-- Back Button -->
+        <p class="detail-footer">
+            <a href="/browse" class="link">← Back to Browse</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

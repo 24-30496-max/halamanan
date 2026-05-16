@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Register - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Join H.A.L.A.M.A.N.A.N</h1>
+        <p class="subtitle">Create your account and start sharing resources</p>
+
+        <form method="POST" class="auth-form">
+            <!-- Full Name Field -->
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Enter your full name"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter your email"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Phone Number Field -->
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    placeholder="Enter your phone number"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Province Field -->
+            <div class="form-group">
+                <label for="province">Province:</label>
+                <input 
+                    type="text" 
+                    id="province" 
+                    name="province" 
+                    placeholder="e.g., Rizal, Laguna, Quezon"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- City Field -->
+            <div class="form-group">
+                <label for="city">City/Municipality:</label>
+                <input 
+                    type="text" 
+                    id="city" 
+                    name="city" 
+                    placeholder="e.g., Tanay, Bauan, Atimonan"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Create a strong password"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input 
+                    type="password" 
+                    id="confirm_password" 
+                    name="confirm_password" 
+                    placeholder="Confirm your password"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Error Message (if any) -->
+            {% if error %}
+                <div class="alert alert-error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-large">
+                Create Account
+            </button>
+        </form>
+
+        <!-- Login Link -->
+        <p class="auth-footer">
+            Already have an account? <a href="/login" class="link">Login here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

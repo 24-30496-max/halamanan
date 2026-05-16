@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Post an Offer - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="post-container">
+    <div class="post-card">
+        <h1>Post an Offer</h1>
+        <p class="post-subtitle">Share your resources with other farmers!</p>
+
+        <form method="POST" class="post-form">
+            <!-- Category Selection -->
+            <div class="form-group">
+                <label for="category">What are you offering? *</label>
+                <select id="category" name="category" required class="form-input">
+                    <option value="">-- Select Category --</option>
+                    <option value="Seeds">Seeds</option>
+                    <option value="Fertilizer">Fertilizer</option>
+                    <option value="Equipment">Equipment</option>
+                    <option value="Tools">Tools</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <!-- Resource Name -->
+            <div class="form-group">
+                <label for="name">What is the resource called? *</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="e.g., Corn Seeds, Tractor, Organic Fertilizer"
+                    required 
+                    class="form-input"
+                >
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Describe your resource *</label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    placeholder="Provide details about quantity, condition, specifications, etc."
+                    required 
+                    class="form-input textarea-input"
+                    rows="5"
+                ></textarea>
+            </div>
+
+            <!-- Availability Period -->
+            <div class="form-group">
+                <label>When is it available? *</label>
+                <div class="date-range">
+                    <div class="date-input-group">
+                        <label for="start_available_date">From:</label>
+                        <input 
+                            type="date" 
+                            id="start_available_date" 
+                            name="start_available_date" 
+                            required 
+                            class="form-input date-input"
+                        >
+                    </div>
+                    <div class="date-input-group">
+                        <label for="end_available_date">Until:</label>
+                        <input 
+                            type="date" 
+                            id="end_available_date" 
+                            name="end_available_date" 
+                            required 
+                            class="form-input date-input"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arrangement Type -->
+            <div class="form-group">
+                <label for="arrangement">How do you want to share? *</label>
+                <select id="arrangement" name="arrangement" required class="form-input">
+                    <option value="">-- Select Arrangement --</option>
+                    <option value="Free">Free (Willing to donate)</option>
+                    <option value="Barter">Barter (Exchange for something)</option>
+                    <option value="Rent">Rent (For a fee)</option>
+                    <option value="Sell">Sell (For payment)</option>
+                    <option value="Negotiable">Negotiable (Discuss terms)</option>
+                </select>
+            </div>
+
+            <!-- Error Message -->
+            {% if error %}
+                <div class="alert alert-error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <!-- Success Message -->
+            {% if success %}
+                <div class="alert alert-success">
+                    {{ success }}
+                </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-large">
+                Post My Offer
+            </button>
+
+            <!-- Back Link -->
+            <p class="form-footer">
+                <a href="/browse" class="link">← Back to Browse</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Info Box -->
+    <div class="info-box">
+        <h3>Tips for Successful Offers</h3>
+        <ul>
+            <li><strong>Be Detailed:</strong> Describe condition and specifications clearly</li>
+            <li><strong>Set Realistic Dates:</strong> When is your resource actually available?</li>
+            <li><strong>Be Fair:</strong> Set reasonable terms that benefit both parties</li>
+            <li><strong>Be Available:</strong> Respond quickly to farmer inquiries</li>
+            <li><strong>Build Trust:</strong> Be honest about the condition of your resource</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

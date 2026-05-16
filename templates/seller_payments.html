@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Payments - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="seller-payments-container">
+    <div class="payments-header">
+        <h1>💳 Pending Payment Approvals</h1>
+        <p class="subtitle">Review and approve payments from buyers</p>
+        <div class="payment-badge">{{ payment_count }} Pending</div>
+    </div>
+
+    {% if pending_payments %}
+        <div class="pending-payments-grid">
+            {% for payment in pending_payments %}
+                <div class="payment-approval-card">
+                    <!-- Payment Header -->
+                    <div class="payment-card-header">
+                        <h3>{{ payment.resource_name }}</h3>
+                        <span class="status-pending">⏳ Pending Approval</span>
+                    </div>
+
+                    <!-- Buyer Information -->
+                    <div class="buyer-section">
+                        <h4>👤 Buyer Information</h4>
+                        <div class="buyer-details">
+                            <p><strong>Name:</strong> {{ payment.buyer_name }}</p>
+                            <p><strong>Phone:</strong> 📞 {{ payment.buyer_phone }}</p>
+                            <p><strong>Location:</strong> 📍 {{ payment.city }}, {{ payment.province }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Payment Details -->
+                    <div class="payment-details-section">
+                        <h4>💰 Payment Details</h4>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span class="value amount">₱ {{ "%.2f"|format(payment.amount) }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Payment Method:</span>
+                            <span class="value">{{ payment.payment_method }}</span>
+                        </div>
+                        {% if payment.transaction_ref %}
+                            <div class="detail-row">
+                                <span class="label">Transaction Ref:</span>
+                                <span class="value ref-number">{{ payment.transaction_ref }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="detail-row">
+                            <span class="label">Submitted On:</span>
+                            <span class="value">{{ payment.created_at }}</span>
+                        </div>
+                        {% if payment.notes %}
+                            <div class="detail-row">
+                                <span class="label">Buyer's Notes:</span>
+                                <span class="value notes">{{ payment.notes }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="approval-actions">
+                        {% if payment.status == 'Pending' %}
+                            <!-- APPROVE BUTTON -->
+                            <form method="POST" action="/approve-payment/{{ payment.payment_id }}" style="flex: 1;">
+                                <button type="submit" class="btn btn-success btn-block">
+                                    ✅ Approve Payment
+                                </button>
+                            </form>
+
+                            <!-- REJECT BUTTON -->
+                            <button class="btn btn-danger btn-block" onclick="openRejectModal({{ payment.payment_id }})">
+                                ❌ Reject Payment
+                            </button>
+                        {% elif payment.status == 'Completed' %}
+                            <button class="btn btn-success btn-block" disabled>
+                                ✅ Already Approved
+                            </button>
+                        {% elif payment.status == 'Failed' %}
+                            <button class="btn btn-danger btn-block" disabled>
+                                ❌ Already Rejected
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">✅</div>
+            <h3>No Pending Payments</h3>
+            <p>All payments have been approved or you have no pending payments.</p>
+            <a href="/browse" class="btn btn-primary">Browse Resources</a>
+        </div>
+    {% endif %}
+
+    <!-- RECENT ACTIONS SECTION -->
+    {% if recent_actions %}
+        <div class="recent-actions-section">
+            <h2>📊 Recent Actions</h2>
+            <div class="recent-actions-list">
+                {% for action in recent_actions %}
+                    <div class="recent-action-item">
+                        <div class="action-badge {{ action.status | lower }}">
+                            {% if action.status == 'Completed' %}
+                                ✅ Approved
+                            {% else %}
+                                ❌ Rejected
+                            {% endif %}
+                        </div>
+                        <div class="action-details">
+                            <p><strong>{{ action.resource_name }}</strong> from {{ action.buyer_name }}</p>
+                            <p class="action-date">{{ action.approved_at }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- REJECTION MODAL -->
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeRejectModal()">&times;</span>
+        
+        <h2>❌ Reject Payment</h2>
+        <p>Are you sure you want to reject this payment?</p>
+
+        <form id="rejectForm" method="POST">
+            <div class="form-group">
+                <label for="rejection_reason">Reason for Rejection (Required) *</label>
+                <textarea 
+                    id="rejection_reason" 
+                    name="rejection_reason" 
+                    placeholder="e.g., Item not available anymore, Wrong amount received..."
+                    required 
+                    class="form-input textarea-input"
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-danger">Confirm Rejection</button>
+                <button type="button" class="btn btn-secondary" onclick="closeRejectModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for Modal -->
+<script>
+    let currentPaymentId = null;
+
+    function openRejectModal(paymentId) {
+        currentPaymentId = paymentId;
+        document.getElementById('rejectModal').style.display = 'block';
+    }
+
+    function closeRejectModal() {
+        document.getElementById('rejectModal').style.display = 'none';
+        currentPaymentId = null;
+    }
+
+    document.getElementById('rejectForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (currentPaymentId) {
+            this.action = `/reject-payment/${currentPaymentId}`;
+            this.submit();
+        }
+    });
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('rejectModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+
+{% endblock %}

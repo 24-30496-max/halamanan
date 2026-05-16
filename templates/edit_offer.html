@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Offer - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="post-container">
+    <div class="post-card">
+        <h1>✏️ Edit Offer</h1>
+        <form method="post" class="post-form">
+            <div class="form-group">
+                <label for="category">Category *</label>
+                <select id="category" name="category" required class="form-input">
+                    <option value="Seeds" {% if offer.category == 'Seeds' %}selected{% endif %}>🌱 Seeds</option>
+                    <option value="Fertilizer" {% if offer.category == 'Fertilizer' %}selected{% endif %}>🧪 Fertilizer</option>
+                    <option value="Equipment" {% if offer.category == 'Equipment' %}selected{% endif %}>🚜 Equipment</option>
+                    <option value="Tools" {% if offer.category == 'Tools' %}selected{% endif %}>🔧 Tools</option>
+                    <option value="Others" {% if offer.category == 'Others' %}selected{% endif %}>📦 Others</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Item Name *</label>
+                <input type="text" id="name" name="name" value="{{ offer.name }}" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" name="description" rows="5" required class="form-input textarea-input">{{ offer.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="start_available_date">Available From *</label>
+                <input type="date" id="start_available_date" name="start_available_date" value="{{ offer.start_available_date|safe }}" required class="form-input date-input">
+            </div>
+            <div class="form-group">
+                <label for="end_available_date">Available Until *</label>
+                <input type="date" id="end_available_date" name="end_available_date" value="{{ offer.end_available_date|safe }}" required class="form-input date-input">
+            </div>
+            <div class="form-group">
+                <label for="arrangement">Arrangement *</label>
+                <select id="arrangement" name="arrangement" required class="form-input">
+                    <option value="Free" {% if offer.arrangement == 'Free' %}selected{% endif %}>Free</option>
+                    <option value="Barter" {% if offer.arrangement == 'Barter' %}selected{% endif %}>Barter</option>
+                    <option value="Negotiable" {% if offer.arrangement == 'Negotiable' %}selected{% endif %}>Negotiable</option>
+                </select>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-info">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <button type="submit" class="btn btn-primary btn-large">
+                ✅ Update Offer
+            </button>
+            <a href="/profile" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

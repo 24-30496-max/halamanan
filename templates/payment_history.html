@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Payment History - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <h1>💰 Payment History</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('purchases')">🛒 My Purchases ({{ purchases | length }})</button>
+        <button class="tab-btn" onclick="showTab('sales')">📦 My Sales ({{ sales | length }})</button>
+    </div>
+
+    
+   <!-- PURCHASES SUBTAB -->
+    <div id="purchases" class="payment-subtab-content active">
+        <h3>My Purchases</h3>
+        
+        {% if purchases %}
+            <div class="transaction-grid">
+                {% for payment in purchases %}
+                    <div class="transaction-card">
+                        <div class="transaction-header">
+                            <h4>{{ payment.resource_name }}</h4>
+                            <span class="status-badge {{ payment.status | lower }}">
+                                {% if payment.status == 'Pending' %}
+                                    ⏳ Pending
+                                {% elif payment.status == 'Completed' %}
+                                    ✅ Completed
+                                {% elif payment.status == 'Failed' %}
+                                    ❌ Rejected
+                                {% else %}
+                                    {{ payment.status }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="transaction-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Seller:</span>
+                                <span class="detail-value">{{ payment.seller_name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Amount:</span>
+                                <span class="detail-value amount">₱ {{ "%.2f"|format(payment.amount) }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Method:</span>
+                                <span class="detail-value">{{ payment.payment_method }}</span>
+                            </div>
+                            {% if payment.transaction_ref %}
+                                <div class="detail-row">
+                                    <span class="detail-label">Ref Number:</span>
+                                    <span class="detail-value ref-number">{{ payment.transaction_ref }}</span>
+                                </div>
+                            {% endif %}
+                            <div class="detail-row">
+                                <span class="detail-label">Submitted:</span>
+                                <span class="detail-value">{{ payment.created_at }}</span>
+                            </div>
+                            {% if payment.status == 'Pending' %}
+                                <div class="status-message pending-message">
+                                    ⏳ <strong>Waiting for Seller Approval</strong>
+                                    <br><small>The seller will review and approve your payment soon.</small>
+                                </div>
+                            {% elif payment.status == 'Completed' %}
+                                <div class="status-message completed-message">
+                                    ✅ <strong>Payment Approved</strong>
+                                    <br><small>Approved on {{ payment.approved_at }}</small>
+                                </div>
+                            {% elif payment.status == 'Failed' %}
+                                <div class="status-message failed-message">
+                                    ❌ <strong>Payment Rejected</strong>
+                                    {% if payment.rejection_reason %}
+                                        <br><small>Reason: {{ payment.rejection_reason }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% if payment.notes %}
+                                <div class="detail-row">
+                                    <span class="detail-label">Your Notes:</span>
+                                    <span class="detail-value">{{ payment.notes }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="seller-contact">
+                            <p>📞 {{ payment.seller_phone }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <p>📭 No purchases yet.</p>
+                <a href="/browse" class="btn btn-primary">Browse Resources</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- SALES SUBTAB -->
+    <div id="sales" class="payment-subtab-content">
+        <h3>My Sales</h3>
+        
+        {% if sales %}
+            <div class="transaction-grid">
+                {% for payment in sales %}
+                    <div class="transaction-card">
+                        <div class="transaction-header">
+                            <h4>{{ payment.resource_name }}</h4>
+                            <span class="status-badge {{ payment.status | lower }}">
+                                {% if payment.status == 'Pending' %}
+                                    ⏳ Pending
+                                {% elif payment.status == 'Completed' %}
+                                    ✅ Completed
+                                {% elif payment.status == 'Failed' %}
+                                    ❌ Rejected
+                                {% else %}
+                                    {{ payment.status }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="transaction-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Buyer:</span>
+                                <span class="detail-value">{{ payment.buyer_name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Amount:</span>
+                                <span class="detail-value amount">₱ {{ "%.2f"|format(payment.amount) }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Method:</span>
+                                <span class="detail-value">{{ payment.payment_method }}</span>
+                            </div>
+                            {% if payment.transaction_ref %}
+                                <div class="detail-row">
+                                    <span class="detail-label">Ref Number:</span>
+                                    <span class="detail-value ref-number">{{ payment.transaction_ref }}</span>
+                                </div>
+                            {% endif %}
+                            <div class="detail-row">
+                                <span class="detail-label">Submitted:</span>
+                                <span class="detail-value">{{ payment.created_at }}</span>
+                            </div>
+                            {% if payment.status == 'Pending' %}
+                                <div class="status-message pending-message">
+                                    ⏳ <strong>You can Approve or Reject this Payment</strong>
+                                    <br><a href="/pending-payments" style="color: var(--primary-green); font-weight: bold;">Go to Pending Approvals →</a>
+                                </div>
+                            {% elif payment.status == 'Completed' %}
+                                <div class="status-message completed-message">
+                                    ✅ <strong>Payment Approved</strong>
+                                    <br><small>Approved on {{ payment.approved_at }}</small>
+                                </div>
+                            {% elif payment.status == 'Failed' %}
+                                <div class="status-message failed-message">
+                                    ❌ <strong>Payment Rejected</strong>
+                                    {% if payment.rejection_reason %}
+                                        <br><small>Reason: {{ payment.rejection_reason }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% if payment.notes %}
+                                <div class="detail-row">
+                                    <span class="detail-label">Buyer's Notes:</span>
+                                    <span class="detail-value">{{ payment.notes }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="buyer-contact">
+                            <p>📞 {{ payment.buyer_phone }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <p>📭 No sales yet.</p>
+                <a href="/post-offer" class="btn btn-primary">Post a Resource</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- JavaScript for Tabs -->
+<script>
+    function showTab(tabName) {
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        const buttons = document.querySelectorAll('.tabs .tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+
+{% endblock %}

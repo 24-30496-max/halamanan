@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <div class="avatar-placeholder">👤</div>
+        </div>
+        <div class="profile-info">
+            <h1>{{ current_user.username }}</h1>
+            <p class="profile-email">{{ current_user.email }}</p>
+            <p class="profile-location">📍 {{ current_user.city }}, {{ current_user.province }}</p>
+            <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+        </div>
+    </div>
+
+    <!-- Profile Tabs -->
+    <div class="profile-tabs">
+        <button class="tab-btn active" onclick="showProfileTab('info')">📋 Info</button>
+        <button class="tab-btn" onclick="showProfileTab('my-offers')">📦 My Offers ({{ total_offers | default('0') }})</button>
+        <button class="tab-btn" onclick="showProfileTab('my-requests')">📝 My Requests ({{ total_requests | default('0') }})</button>
+        <button class="tab-btn" onclick="showProfileTab('payment-history')">💰 Payment History ({{ total_purchases + total_sales | default('0') }})</button>
+        <button class="tab-btn" onclick="showProfileTab('history')">📊 Connections ({{ total_connections | default('0') }})</button>
+    </div>
+
+    <!-- INFO TAB -->
+    <div id="info" class="profile-tab-content active">
+        <div class="profile-section">
+            <h2>Contact Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Full Name:</label>
+                    <p>{{ current_user.username }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Email:</label>
+                    <p>{{ current_user.email }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Phone:</label>
+                    <p>{{ current_user.phone }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Province:</label>
+                    <p>{{ current_user.province }}</p>
+                </div>
+                <div class="info-item">
+                    <label>City/Municipality:</label>
+                    <p>{{ current_user.city }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h2>Account Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">{{ total_offers | default('0') }}</div>
+                    <div class="stat-label">Total Offers Posted</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ total_requests | default('0') }}</div>
+                    <div class="stat-label">Total Requests Posted</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ total_purchases | default('0') }}</div>
+                    <div class="stat-label">Total Purchases</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ total_sales | default('0') }}</div>
+                    <div class="stat-label">Total Sales</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ total_connections | default('0') }}</div>
+                    <div class="stat-label">Total Connections</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MY OFFERS TAB -->
+    <div id="my-offers" class="profile-tab-content">
+        <h2>My Posted Offers</h2>
+        
+        {% if my_offers %}
+            <div class="my-resources-grid">
+                {% for offer in my_offers %}
+                    <div class="my-resource-card">
+                        <div class="resource-status-badge 
+                            {% if offer.status == 'Available' %}available
+                            {% elif offer.status == 'Pending' %}pending
+                            {% else %}completed{% endif %}">
+                            {{ offer.status }}
+                        </div>
+                        
+                        <h3>{{ offer.name }}</h3>
+                        <p class="category-tag">{{ offer.category }}</p>
+                        <p class="description">{{ offer.description | truncate(100) }}</p>
+                        
+                        <div class="date-info-small">
+                            <p>📅 {{ offer.start_available_date }} to {{ offer.end_available_date }}</p>
+                        </div>
+
+                        <div class="resource-actions-small">
+                            <a href="/edit-offer/{{ offer.resource_id }}" class="btn btn-info">Edit</a>
+                            <a href="/delete-offer/{{ offer.resource_id }}" class="btn btn-danger" onclick="return confirm('Delete this offer?')">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <p>You haven't posted any offers yet.</p>
+                <a href="/post-offer" class="btn btn-primary">Post Your First Offer</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- MY REQUESTS TAB -->
+    <div id="my-requests" class="profile-tab-content">
+        <h2>My Posted Requests</h2>
+        
+        {% if my_requests %}
+            <div class="my-resources-grid">
+                {% for request in my_requests %}
+                    <div class="my-resource-card">
+                        <div class="resource-status-badge 
+                            {% if request.status == 'Available' %}available
+                            {% elif request.status == 'Pending' %}pending
+                            {% else %}completed{% endif %}">
+                            {{ request.status }}
+                        </div>
+                        
+                        <h3>{{ request.needed_item }}</h3>
+                        <p class="category-tag">{{ request.category }}</p>
+                        <p class="description">{{ request.description | truncate(100) }}</p>
+                        
+                        <div class="urgency-badge">{{ request.urgency }}</div>
+
+                        <div class="resource-actions-small">
+                            <a href="/edit-request/{{ request.request_id }}" class="btn btn-info">Edit</a>
+                            <a href="/delete-request/{{ request.request_id }}" class="btn btn-danger" onclick="return confirm('Delete this request?')">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <p>You haven't posted any requests yet.</p>
+                <a href="/post-request" class="btn btn-primary">Post Your First Request</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- PAYMENT HISTORY TAB -->
+    <div id="payment-history" class="profile-tab-content">
+        <h2>💰 Payment History</h2>
+
+        <!-- Subtabs for Purchases and Sales -->
+        <div class="payment-subtabs">
+            <button class="subtab-btn active" onclick="showPaymentTab('purchases')">🛒 My Purchases ({{ total_purchases | default('0') }})</button>
+            <button class="subtab-btn" onclick="showPaymentTab('sales')">📦 My Sales ({{ total_sales | default('0') }})</button>
+        </div>
+
+        <!-- PURCHASES SUBTAB -->
+        <div id="purchases" class="payment-subtab-content active">
+            <h3>My Purchases</h3>
+            
+            {% if purchases %}
+                <div class="transaction-grid">
+                    {% for payment in purchases %}
+                        <div class="transaction-card">
+                            <div class="transaction-header">
+                                <h4>{{ payment.resource_name }}</h4>
+                                <span class="status-badge {{ payment.status | lower }}">
+                                    {% if payment.status == 'Pending' %}
+                                        ⏳ Pending
+                                    {% elif payment.status == 'Completed' %}
+                                        ✅ Completed
+                                    {% elif payment.status == 'Failed' %}
+                                        ❌ Rejected
+                                    {% else %}
+                                        {{ payment.status }}
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <div class="transaction-details">
+                                <div class="detail-row">
+                                    <span class="label">Seller:</span>
+                                    <span class="value">{{ payment.seller_name }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Amount:</span>
+                                    <span class="value amount">₱ {{ "%.2f"|format(payment.amount) }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Method:</span>
+                                    <span class="value">{{ payment.payment_method }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Date:</span>
+                                    <span class="value">{{ payment.created_at }}</span>
+                                </div>
+                                
+                                {% if payment.status == 'Pending' %}
+                                    <div class="status-info pending">
+                                        ⏳ Waiting for seller approval
+                                    </div>
+                                {% elif payment.status == 'Completed' %}
+                                    <div class="status-info completed">
+                                        ✅ Approved on {{ payment.approved_at }}
+                                    </div>
+                                {% elif payment.status == 'Failed' %}
+                                    <div class="status-info failed">
+                                        ❌ Rejected
+                                        {% if payment.rejection_reason %}
+                                            <br><small>{{ payment.rejection_reason }}</small>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="contact-info">
+                                <p>📞 {{ payment.seller_phone }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-message">
+                    <p>No purchases yet.</p>
+                    <a href="/browse" class="btn btn-primary">Browse Resources</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- SALES SUBTAB -->
+        <div id="sales" class="payment-subtab-content">
+            <h3>My Sales</h3>
+            
+            {% if sales %}
+                <div class="transaction-grid">
+                    {% for payment in sales %}
+                        <div class="transaction-card">
+                            <div class="transaction-header">
+                                <h4>{{ payment.resource_name }}</h4>
+                                <span class="status-badge {{ payment.status | lower }}">
+                                    {% if payment.status == 'Pending' %}
+                                        ⏳ Pending
+                                    {% elif payment.status == 'Completed' %}
+                                        ✅ Completed
+                                    {% elif payment.status == 'Failed' %}
+                                        ❌ Rejected
+                                    {% else %}
+                                        {{ payment.status }}
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <div class="transaction-details">
+                                <div class="detail-row">
+                                    <span class="label">Buyer:</span>
+                                    <span class="value">{{ payment.buyer_name }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Amount:</span>
+                                    <span class="value amount">₱ {{ "%.2f"|format(payment.amount) }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Method:</span>
+                                    <span class="value">{{ payment.payment_method }}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Date:</span>
+                                    <span class="value">{{ payment.created_at }}</span>
+                                </div>
+                                
+                                {% if payment.status == 'Pending' %}
+                                    <div class="status-info pending">
+                                        ⏳ Awaiting your approval
+                                        <br><a href="/pending-payments" style="color: var(--primary-green); font-weight: bold;">Approve Now →</a>
+                                    </div>
+                                {% elif payment.status == 'Completed' %}
+                                    <div class="status-info completed">
+                                        ✅ Approved on {{ payment.approved_at }}
+                                    </div>
+                                {% elif payment.status == 'Failed' %}
+                                    <div class="status-info failed">
+                                        ❌ Rejected
+                                        {% if payment.rejection_reason %}
+                                            <br><small>{{ payment.rejection_reason }}</small>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="contact-info">
+                                <p>📞 {{ payment.buyer_phone }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-message">
+                    <p>No sales yet.</p>
+                    <a href="/post-offer" class="btn btn-primary">Post a Resource</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- CONNECTION HISTORY TAB -->
+    <div id="history" class="profile-tab-content">
+        <h2>📊 Connection History</h2>
+        
+        {% if connection_history %}
+            <div class="history-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Type</th>
+                            <th>Connected With</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for conn in connection_history %}
+                            <tr>
+                                <td>{{ conn.resource_name if conn.resource_name else 'N/A' }}</td>
+                                <td>
+                                    <span class="type-badge {{ conn.connection_type | lower }}">
+                                        {% if conn.connection_type == 'Offer' %}
+                                            📦 Offer
+                                        {% elif conn.connection_type == 'Request' %}
+                                            📝 Request
+                                        {% else %}
+                                            Unknown
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td>{{ conn.other_farmer_name if conn.other_farmer_name else 'Unknown' }}</td>
+                                <td>
+                                    <span class="status-badge-small {{ conn.status | lower }}">
+                                        {{ conn.status }}
+                                    </span>
+                                </td>
+                                <td>{{ conn.created_at }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <p>No connection history yet.</p>
+                <a href="/browse" class="btn btn-primary">Start Browsing Resources</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- JavaScript for Tab Switching -->
+<script>
+    function showProfileTab(tabName) {
+        // Hide all tabs
+        const tabs = document.querySelectorAll('.profile-tab-content');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll('.profile-tabs .tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // Show selected tab
+        const selectedTab = document.getElementById(tabName);
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+        }
+
+        // Add active class to clicked button
+        event.target.classList.add('active');
+    }
+
+    function showPaymentTab(tabName) {
+        // Hide all payment subtabs
+        const subtabs = document.querySelectorAll('.payment-subtab-content');
+        subtabs.forEach(subtab => subtab.classList.remove('active'));
+
+        // Remove active class from all subtab buttons
+        const subbtn = document.querySelectorAll('.payment-subtabs .subtab-btn');
+        subbtn.forEach(btn => btn.classList.remove('active'));
+
+        // Show selected subtab
+        const selectedSubtab = document.getElementById(tabName);
+        if (selectedSubtab) {
+            selectedSubtab.classList.add('active');
+        }
+
+        // Add active class to clicked button
+        event.target.classList.add('active');
+    }
+</script>
+
+{% endblock %}

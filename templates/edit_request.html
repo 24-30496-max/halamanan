@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Request - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="post-container">
+    <div class="post-card">
+        <h1>✏️ Edit Request</h1>
+        <form method="post" class="post-form">
+            <div class="form-group">
+                <label for="category">Category *</label>
+                <select id="category" name="category" required class="form-input">
+                    <option value="Seeds" {% if req.category == 'Seeds' %}selected{% endif %}>🌱 Seeds</option>
+                    <option value="Fertilizer" {% if req.category == 'Fertilizer' %}selected{% endif %}>🧪 Fertilizer</option>
+                    <option value="Equipment" {% if req.category == 'Equipment' %}selected{% endif %}>🚜 Equipment</option>
+                    <option value="Tools" {% if req.category == 'Tools' %}selected{% endif %}>🔧 Tools</option>
+                    <option value="Others" {% if req.category == 'Others' %}selected{% endif %}>📦 Others</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="needed_item">Needed Item *</label>
+                <input type="text" id="needed_item" name="needed_item" value="{{ req.needed_item }}" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" name="description" rows="5" required class="form-input textarea-input">{{ req.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="needed_date">Needed Date *</label>
+                <input type="date" id="needed_date" name="needed_date" value="{{ req.needed_date|safe }}" required class="form-input date-input">
+            </div>
+            <div class="form-group">
+                <label for="urgency">Urgency *</label>
+                <select id="urgency" name="urgency" required class="form-input">
+                    <option value="Not Urgent" {% if req.urgency == 'Not Urgent' %}selected{% endif %}>Not Urgent</option>
+                    <option value="Somewhat Urgent" {% if req.urgency == 'Somewhat Urgent' %}selected{% endif %}>Somewhat Urgent</option>
+                    <option value="Very Urgent" {% if req.urgency == 'Very Urgent' %}selected{% endif %}>Very Urgent</option>
+                    <option value="Emergency" {% if req.urgency == 'Emergency' %}selected{% endif %}>Emergency</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="arrangement">Arrangement *</label>
+                <select id="arrangement" name="arrangement" required class="form-input">
+                    <option value="Free" {% if req.arrangement == 'Free' %}selected{% endif %}>Free (Looking for donation)</option>
+                    <option value="Barter" {% if req.arrangement == 'Barter' %}selected{% endif %}>Barter (Exchange)</option>
+                    <option value="Negotiable" {% if req.arrangement == 'Negotiable' %}selected{% endif %}>Negotiable</option>
+                </select>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-info">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <button type="submit" class="btn btn-primary btn-large">
+                ✅ Update Request
+            </button>
+            <a href="/profile" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

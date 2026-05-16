@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Offer Help - H.A.L.A.M.A.N.A.N{% endblock %}
+
+{% block content %}
+<div class="calendar-container">
+    <div class="calendar-card">
+        <h1>Offer Your Help</h1>
+        <p class="calendar-subtitle">When can you provide this resource?</p>
+
+        <form method="POST" class="calendar-form">
+            <!-- Start Date -->
+            <div class="form-group">
+                <label for="start_date">Available From *</label>
+                <input 
+                    type="date" 
+                    id="start_date" 
+                    name="start_date" 
+                    required 
+                    class="form-input date-input"
+                >
+            </div>
+
+            <!-- End Date -->
+            <div class="form-group">
+                <label for="end_date">Available Until *</label>
+                <input 
+                    type="date" 
+                    id="end_date" 
+                    name="end_date" 
+                    required 
+                    class="form-input date-input"
+                >
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p><strong>Note:</strong> The farmer will receive your offer and can approve or reject based on their needs.</p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-large">
+                Send Offer
+            </button>
+
+            <!-- Back Link -->
+            <p class="form-footer">
+                <a href="/browse" class="link">← Cancel</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
