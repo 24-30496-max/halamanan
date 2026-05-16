@@ -79,22 +79,22 @@
     <!-- MY OFFERS TAB -->
     <div id="my-offers" class="profile-tab-content">
         <h2>My Posted Offers</h2>
-        
+
         {% if my_offers %}
             <div class="my-resources-grid">
                 {% for offer in my_offers %}
                     <div class="my-resource-card">
-                        <div class="resource-status-badge 
+                        <div class="resource-status-badge
                             {% if offer.status == 'Available' %}available
                             {% elif offer.status == 'Pending' %}pending
                             {% else %}completed{% endif %}">
                             {{ offer.status }}
                         </div>
-                        
+
                         <h3>{{ offer.name }}</h3>
                         <p class="category-tag">{{ offer.category }}</p>
                         <p class="description">{{ offer.description | truncate(100) }}</p>
-                        
+
                         <div class="date-info-small">
                             <p>📅 {{ offer.start_available_date }} to {{ offer.end_available_date }}</p>
                         </div>
@@ -117,22 +117,22 @@
     <!-- MY REQUESTS TAB -->
     <div id="my-requests" class="profile-tab-content">
         <h2>My Posted Requests</h2>
-        
+
         {% if my_requests %}
             <div class="my-resources-grid">
                 {% for request in my_requests %}
                     <div class="my-resource-card">
-                        <div class="resource-status-badge 
+                        <div class="resource-status-badge
                             {% if request.status == 'Available' %}available
                             {% elif request.status == 'Pending' %}pending
                             {% else %}completed{% endif %}">
                             {{ request.status }}
                         </div>
-                        
+
                         <h3>{{ request.needed_item }}</h3>
                         <p class="category-tag">{{ request.category }}</p>
                         <p class="description">{{ request.description | truncate(100) }}</p>
-                        
+
                         <div class="urgency-badge">{{ request.urgency }}</div>
 
                         <div class="resource-actions-small">
@@ -163,7 +163,7 @@
         <!-- PURCHASES SUBTAB -->
         <div id="purchases" class="payment-subtab-content active">
             <h3>My Purchases</h3>
-            
+
             {% if purchases %}
                 <div class="transaction-grid">
                     {% for payment in purchases %}
@@ -200,7 +200,7 @@
                                     <span class="label">Date:</span>
                                     <span class="value">{{ payment.created_at }}</span>
                                 </div>
-                                
+
                                 {% if payment.status == 'Pending' %}
                                     <div class="status-info pending">
                                         ⏳ Waiting for seller approval
@@ -236,7 +236,7 @@
         <!-- SALES SUBTAB -->
         <div id="sales" class="payment-subtab-content">
             <h3>My Sales</h3>
-            
+
             {% if sales %}
                 <div class="transaction-grid">
                     {% for payment in sales %}
@@ -273,7 +273,7 @@
                                     <span class="label">Date:</span>
                                     <span class="value">{{ payment.created_at }}</span>
                                 </div>
-                                
+
                                 {% if payment.status == 'Pending' %}
                                     <div class="status-info pending">
                                         ⏳ Awaiting your approval
@@ -311,7 +311,7 @@
     <!-- CONNECTION HISTORY TAB -->
     <div id="history" class="profile-tab-content">
         <h2>📊 Connection History</h2>
-        
+
         {% if connection_history %}
             <div class="history-table">
                 <table>

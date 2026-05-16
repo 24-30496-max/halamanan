@@ -7,7 +7,7 @@
     <!-- Sidebar Filter -->
     <aside class="filter-sidebar">
         <h3>Filter Resources</h3>
-        
+
         <form method="GET" class="filter-form" id="filterForm">
             <!-- Category Filter -->
             <div class="filter-group">
@@ -107,7 +107,7 @@
                                     Others
                                 {% endif %}
                             </div>
-                            <div class="resource-status 
+                            <div class="resource-status
                                 {% if resource.status == 'Available' %}status-available
                                 {% elif resource.status == 'Pending' %}status-pending
                                 {% else %}status-completed
@@ -161,7 +161,7 @@
 <section class="recent-requests-section">
     <h2>Recent Requests from Farmers</h2>
     <p class="section-subtitle">Farmers looking for resources - Maybe you can help?</p>
-    
+
     <div class="requests-grid">
         {% if recent_requests %}
             {% for req in recent_requests %}
