@@ -1,117 +1,59 @@
-# H.A.L.A.M.A.N.A.N - Farmers Resource Exchange Platform
+# HALAMANAN: Helping Agriculture Link All Machinery And Nurture Agrarian Needs
 
-A Flask-based web application that connects farmers to share and exchange resources.
+_A Research Project for Advanced Database Management System_  
+_Batangas State University - Lipa Campus_  
+**Submitted by:**  
+- Cuevas, Hannah Marie B.
+- Gonzales, Patricia Rose L.
+- Gutierrez, Andrei G.
 
-## Prerequisites
+_May 2026_
 
-- Python 3.7+
-- MySQL Server
-- pip (Python package manager)
+---
 
-## Installation
+## Abstract
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd halamanan
-   ```
+In an era of rapid digital transformation, our society is increasingly focused on virtual innovation and technological trends. However, as we transition into this digitally driven environment, there is a risk of overlooking the foundational industries that sustain us—most notably, agriculture. While technology thrives, many local farming communities continue to struggle with traditional barriers, including the high cost of specialized machinery, the physical toll of heavy manual labor, and the lack of sufficient agricultural supplies.
 
-2. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+Research consistently demonstrates that digital technologies can be a powerful tool for local industries when applied with purpose. This project, **HALAMANAN**, seeks to bridge the gap between modern web technology and traditional farming. By creating a platform for machinery and resource sharing, we aim to transform the way farmers access essential machinery and agrarian needs. By moving away from informal sharing methods towards a technology with a structured relational database, we can lessen the burden of heavy labor and delayed produce, ensure real-time scheduling and tracking, and make certain that the agricultural sector remains a viable and productive path for the next generation.
 
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+With this system, we ultimately promote decent work and economic growth by utilizing technology and upgrading the way farmers work (SDG 8). As well as bridging the digital divide, bringing modern data management to local farms by innovation (SDG 9). Ultimately, this system is designed to ensure that no farmer is left behind in the digital age, turning shared resources into community strength.
 
-4. **Set up environment variables:**
-   - Copy `.env.example` to `.env`:
-     ```bash
-     cp .env.example .env
-     ```
-   - Edit `.env` with your database credentials and settings:
-     ```
-     # Required
-     FLASK_SECRET_KEY=your_secret_key_here_change_in_production
-     DB_HOST=localhost
-     DB_PORT=3306
-     DB_USER=your_db_user
-     DB_PASSWORD=your_db_password
-     DB_NAME=halamanan07
-     
-     # Optional (defaults shown)
-     FLASK_DEBUG=False
-     FLASK_PORT=5000
-     ```
-   - **Important**: The `FLASK_SECRET_KEY` is required and must be a strong, random string in production.
+---
 
-5. **Create the database:**
-   - Connect to MySQL and run the schema:
-     ```bash
-     mysql -u root -p < database_schema.sql
-     ```
+## Project Overview
 
-6. **Run the application:**
-   ```bash
-   python app.py
-   ```
+HALAMANAN is a web-based platform designed to assist local farmers and agrarian communities by:
+- Facilitating **sharing of agricultural machinery and resources**
+- Providing **real-time scheduling and tracking** for shared assets
+- Lowering the cost and labor burden for small-scale farmers
+- Creating a **structured and searchable database** of resources, offers, and requests
 
-7. **Access the application:**
-   - Open your browser and go to: `http://localhost:5000`
-
-## Project Structure
-
-```
-halamanan/
-├── app.py                      # Main Flask application
-├── database_schema.sql         # Database schema
-├── static/
-│   └── style.css              # CSS styles
-├── templates/                  # HTML templates
-│   ├── base.html              # Base template
-│   ├── home.html              # Home page
-│   ├── login.html             # Login page
-│   ├── register.html          # Registration page
-│   ├── browse.html            # Browse resources
-│   ├── profile.html           # User profile
-│   ├── post_offer.html        # Post offers
-│   ├── post_request.html      # Post requests
-│   └── ... (other templates)
-├── .env.example               # Environment variables template
-└── README.md                  # This file
-```
+---
 
 ## Features
 
-- User registration and authentication
-- Browse and search resources
-- Post offers and requests
-- Resource connections and inquiries
-- Payment management
-- User profile management
+- **User Registration & Authentication**
+- **Post and Request Offers** for machinery/resources
+- **Resource and Offer Management**
+- **Scheduling and Calendar Integration**
+- **Secure Payment Tracking**
+- **Farmer Connections and Networking Tools**
+- **Admin Panel for System Management**
 
-## Security Notes
+---
 
-- Always use strong secret keys in production
-- Store sensitive information in `.env` file (not in version control)
-- Never commit `.env` file to the repository
-- Change default database credentials before deployment
+## Technologies Used
 
-## Code Quality
+- **Backend:** Python (Flask)
+- **Frontend:** HTML, CSS
+- **Database:** MySQL (or similar relational DB)
+- **Other Libraries:** See `requirements.txt`
 
-This project follows Python best practices:
-- Code is formatted with Black
-- HTML templates have consistent indentation
-- CSS is organized with clear sections
-- SQL schema is properly documented
+---
 
-## License
+## Authors
 
-[Add license information here]
-
-## Contact
-
-[Add contact information here]
+- Cuevas, Hannah Marie B.
+- Gonzales, Patricia Rose L.
+- Gutierrez, Andrei G.
