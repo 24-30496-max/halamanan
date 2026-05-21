@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import (
@@ -32,7 +35,7 @@ login_manager.login_view = "login"
 db_config = {
     "host": os.getenv("DB_HOST", "localhost"),
     "user": os.getenv("DB_USER", "root"),
-    "password": os.getenv("DB_PASSWORD", ""),
+    "password": os.getenv("DB_PASSWORD", "andrei"),
     "database": os.getenv("DB_NAME", "halamanan07"),
     "port": int(os.getenv("DB_PORT", "3306")),
 }
